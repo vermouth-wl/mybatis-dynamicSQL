@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis6.mapper.UserInfoMapper">
 
+    <!-- 动态SQL之if元素 -->
     <!-- 根据用户名进行模糊查询，如果输入模糊用户名，则查询对应内容，如果没有输入，则查询全部内容 -->
     <select id="findUserInfoByUserNameLike" parameterType="String" resultMap="userInfoMap">
         select * from userinfo t
@@ -16,4 +17,48 @@
         <id property="userName" column="user_name"/>
     </resultMap>
 
+    <!-- 动态SQL之where if元素 -->
+    <!-- 根据名字和班级号进行模糊查询，如果输入，返回关联用户信息，如果没有输入，返回所有用户信息 -->
+    <select id="findUserInfoByName" parameterType="String" resultMap="userInfoMap2">
+        select * from userinfo t
+        <where>
+            <if test="name != '' and name != null">
+                t.name like concat(concat('%', #{name}), '%')
+            </if>
+            <if test="classId > -1">
+                and t.class_id = #{classId}
+            </if>
+        </where>
+    </select>
+    <!-- 使用resultMap映射结果集 -->
+    <resultMap id="userInfoMap2" type="UserInfo">
+        <id property="id" column="id"/>
+        <id property="userCode" column="user_code"/>
+        <id property="userName" column="user_name"/>
+    </resultMap>
+
+    <!--  动态SQL之set if元素  -->
+    <!--  更新用户的用户名和密码  -->
+    <update id="updateUserInfoUsernameAndPassword" parameterType="UserInfo">
+        update userinfo t
+        <set>
+            <if test="userName != null and userName != ''">
+                t.user_name = #{userName},
+            </if>
+            <if test="password != '' and password != null">
+                t.password = #{password}
+            </if>
+        </set>
+        where t.id = #{id}
+    </update>
+    <!--  根据id查询  -->
+    <select id="findUserInfoById" resultMap="userInfoMap3" parameterType="int">
+        select * from userinfo t where t.id = #{id}
+    </select>
+    <!-- 使用resultMap映射结果集 -->
+    <resultMap id="userInfoMap3" type="UserInfo">
+        <id property="id" column="id"/>
+        <id property="userCode" column="user_code"/>
+        <id property="userName" column="user_name"/>
+    </resultMap>
 </mapper>

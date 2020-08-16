@@ -66,6 +66,47 @@ public class UserInfoTest {
 
     }
 
+     // 根据名字和班级号进行模糊查询，如果输入，返回关联用户信息，如果没有输入，返回所有用户信息
+    @Test
+    public void testFindUserInfoByName() {
+
+        // 获得UserInfoMapper的接口代理对象
+        UserInfoMapper userInfoMapper = sqlSession.getMapper(UserInfoMapper.class);
+
+        // 创建UserInfo对象, 用于封装查询条件
+        UserInfo userInfo = new UserInfo();
+        userInfo.setName("王");
+        userInfo.setClassId(1);
+
+        List<UserInfo> userInfoList = userInfoMapper.findUserInfoByName(userInfo);
+        userInfoList.forEach(e -> System.out.println(e.userInfo()));
+
+    }
+
+    // 更新用户用户名及密码
+    @Test
+    public void testUpdateUserInfoUsernameAndPassword() {
+
+        // 获取UserInfo的接口代理对象
+        UserInfoMapper userInfoMapper = sqlSession.getMapper(UserInfoMapper.class);
+
+        // 实例化UserInfo对象，封装查询条件
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(13);
+        userInfo.setUserName("测试");
+        userInfo.setPassword("yyyyy");
+
+        int result = userInfoMapper.updateUserInfoUsernameAndPassword(userInfo);
+        if (result > 0) {
+            System.out.println("更新成功");
+            System.out.println("正在查询用户...");
+            userInfo = userInfoMapper.findUserInfoById(13);
+            System.out.println(userInfo.userInfo());
+        } else {
+            System.out.println("更新失败");
+        }
+
+    }
 
 
     //

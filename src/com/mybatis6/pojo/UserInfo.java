@@ -1,6 +1,8 @@
 package com.mybatis6.pojo;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -15,11 +17,13 @@ public class UserInfo {
     private Integer id;
     private String userCode;
     private String userName;
+    private String password;
     private String name;
     private String email;
     private String phone;
     private String address;
     private Date regDate;
+    private Integer classId;
 
     public String userInfo() {
         return "该用户的用户编码: " + userCode + ", " +
@@ -29,6 +33,22 @@ public class UserInfo {
                 "联系电话: " + phone + ", " +
                 "联系地址: " + address + ", " +
                 "注册时间: " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(regDate);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
     public Integer getId() {
