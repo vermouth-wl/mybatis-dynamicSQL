@@ -9,4 +9,6 @@ public interface UserInfoMapper {
     List<UserInfo> findUserInfoByName(UserInfo userInfo);
     int updateUserInfoUsernameAndPassword(UserInfo userInfo);
     UserInfo findUserInfoById(Integer id);
+    List<UserInfo> findUserInfoByUserNameWithIf_Trim(UserInfo userInfo);
+    int updateUserInfoUsernameAndPassword_Trim(UserInfo userInfo);
 }

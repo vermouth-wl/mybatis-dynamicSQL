@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,6 +107,48 @@ public class UserInfoTest {
             System.out.println("更新失败");
         }
 
+    }
+
+    // 使用trim元素代替where元素，模糊用户名查询，未查询到结果返回所有信息
+    @Test
+    public void testFindUserInfoByUserNameWithIf_Trim() {
+
+        // 获得UserInfo的接口代理对象
+        UserInfoMapper userInfoMapper = sqlSession.getMapper(UserInfoMapper.class);
+
+        // 实例化UserInfo对象userInfo, 并赋值封装查询条件
+        UserInfo userInfo = new UserInfo();
+        //userInfo.setUserName("王");
+        userInfo.setStatus(1);
+
+        // 调用接口的findUserInfoByUserNameWithIf_Trim()方法
+        List<UserInfo> userInfoList = userInfoMapper.findUserInfoByUserNameWithIf_Trim(userInfo);
+        userInfoList.forEach(e -> System.out.println(e.userInfo()));
+    }
+
+    // 使用trim元素代替set元素,更新用户名及密码
+    @Test
+    public void testUpdateUserInfoUsernameAndPassword_Trim() {
+
+        // 获取UserInfo接口代理对象
+        UserInfoMapper userInfoMapper = sqlSession.getMapper(UserInfoMapper.class);
+
+        // 实例化UserInfo对象，封装条件
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserName("轩轩");
+        userInfo.setPassword("xx");
+        userInfo.setId(13);
+
+        int result = userInfoMapper.updateUserInfoUsernameAndPassword_Trim(userInfo);
+
+        if (result > 0) {
+            System.out.println("更新成功");
+            System.out.println("正在重新查询用户...");
+            userInfo = userInfoMapper.findUserInfoById(13);
+            System.out.println(userInfo.userInfo());
+        } else {
+            System.out.println("更新失败");
+        }
     }
 
 

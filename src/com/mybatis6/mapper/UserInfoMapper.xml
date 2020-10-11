@@ -61,4 +61,40 @@
         <id property="userCode" column="user_code"/>
         <id property="userName" column="user_name"/>
     </resultMap>
+
+
+    <!--  动态SQL之trim元素  -->
+    <!-- 根据用户姓名进行模糊查询，如果未输入用户姓名，查询所有用户信息 -->
+    <select id="findUserInfoByUserNameWithIf_Trim" resultMap="userInfoMap4" parameterType="String">
+        select * from userinfo t
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="userName != null and userName != ''">
+                t.user_name like concat(concat('%', #{userName}), '%')
+            </if>
+            <if test="status > -1">
+                and t.status = #{status}
+            </if>
+        </trim>
+    </select>
+    <!-- 使用resultMap映射结果集 -->
+    <resultMap id="userInfoMap4" type="UserInfo">
+        <id property="id" column="id"/>
+        <id property="userCode" column="user_code"/>
+        <id property="userName" column="user_name"/>
+    </resultMap>
+
+    <!-- 更新用户名及密码 -->
+    <update id="updateUserInfoUsernameAndPassword_Trim" parameterType="UserInfo">
+        update userinfo t
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != '' and userName != null">
+                t.user_name = #{userName},
+            </if>
+            <if test="password != '' and password != null">
+                t.password = #{password}
+            </if>
+        </trim>
+        where t.id = #{id}
+    </update>
+
 </mapper>

@@ -24,6 +24,7 @@ public class UserInfo {
     private String address;
     private Date regDate;
     private Integer classId;
+    private Integer status;
 
     public String userInfo() {
         return "该用户的用户编码: " + userCode + ", " +
@@ -113,5 +114,13 @@ public class UserInfo {
 
     public void setRegDate(Date regDate) {
         this.regDate = regDate;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
