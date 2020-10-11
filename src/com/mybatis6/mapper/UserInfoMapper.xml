@@ -122,4 +122,19 @@
         <result property="userName" column="user_name"/>
     </resultMap>
 
+    <!--  动态SQL之foreach元素  -->
+    <!--  foreach元素主要用于迭代元素，主要用于sql语句in关键字后面  -->
+    <!--  查询id为1、2、3、4、13的数据  -->
+    <select id="findUserInfoByIdList" resultMap="userInfoMap6">
+        select * from userinfo t where t.id in
+        <foreach collection="list" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </select>
+    <!--  使用resultMap映射结果集  -->
+    <resultMap id="userInfoMap6" type="UserInfo">
+        <id property="id" column="id"/>
+        <result property="userCode" column="user_code"/>
+        <result property="userName" column="user_name"/>
+    </resultMap>
 </mapper>

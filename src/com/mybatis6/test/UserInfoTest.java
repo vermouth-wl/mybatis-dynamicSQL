@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.PublicKey;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -166,6 +167,22 @@ public class UserInfoTest {
 
         // 调用接口方法进行查询
         List<UserInfo> userInfoList = userInfoMapper.findUserInfo_Choose(userInfo);
+
+        userInfoList.forEach(e -> System.out.println(e.userInfo()));
+    }
+
+    // 使用foreach元素进行查询条件迭代
+    @Test
+    public void testFindUserInfoByIdList() {
+
+        // 获取接口代理对象
+        UserInfoMapper userInfoMapper = sqlSession.getMapper(UserInfoMapper.class);
+
+        // 创建集合对象保存用户id
+        List<Integer> ids = Arrays.asList(1, 2, 3, 4, 13);
+
+        // 调用接口方法进行查询
+        List<UserInfo> userInfoList = userInfoMapper.findUserInfoByIdList(ids);
 
         userInfoList.forEach(e -> System.out.println(e.userInfo()));
     }

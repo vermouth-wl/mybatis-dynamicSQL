@@ -12,4 +12,5 @@ public interface UserInfoMapper {
     List<UserInfo> findUserInfoByUserNameWithIf_Trim(UserInfo userInfo);
     int updateUserInfoUsernameAndPassword_Trim(UserInfo userInfo);
     List<UserInfo> findUserInfo_Choose(UserInfo userInfo);
+    List<UserInfo> findUserInfoByIdList(List<Integer> ids);
 }
