@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.PublicKey;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -149,6 +150,24 @@ public class UserInfoTest {
         } else {
             System.out.println("更新失败");
         }
+    }
+
+    // 使用choose、when、otherwise元素对查询条件进行选择
+    @Test
+    public void testFindUserInfo_Choose() {
+
+        // 获取接口代理对象
+        UserInfoMapper userInfoMapper = sqlSession.getMapper(UserInfoMapper.class);
+
+        // 实例化UserInfo对象，封装查询条件
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserName("王");
+        userInfo.setStatus(1);
+
+        // 调用接口方法进行查询
+        List<UserInfo> userInfoList = userInfoMapper.findUserInfo_Choose(userInfo);
+
+        userInfoList.forEach(e -> System.out.println(e.userInfo()));
     }
 
 

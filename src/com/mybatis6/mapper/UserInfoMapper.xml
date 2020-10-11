@@ -64,6 +64,7 @@
 
 
     <!--  动态SQL之trim元素  -->
+    <!--  使用trim元素替代where元素  -->
     <!-- 根据用户姓名进行模糊查询，如果未输入用户姓名，查询所有用户信息 -->
     <select id="findUserInfoByUserNameWithIf_Trim" resultMap="userInfoMap4" parameterType="String">
         select * from userinfo t
@@ -96,5 +97,29 @@
         </trim>
         where t.id = #{id}
     </update>
+    
+    <!-- 动态SQL之choose、when、otherwise元素 -->
+    <!--  choose元素按顺序判断when中的条件是否成立，如果有一个条件成立，则不判断后面条件，无条件成立，执行otherwise中的语句  -->
+    <!-- 根据用户名或者status查询用户，userName不为空，执行userName条件，否则执行后续status条件 -->
+    <select id="findUserInfo_Choose" parameterType="String" resultMap="userInfoMap5">
+        select * from userinfo t
+        <where>
+            <choose>
+                <when test="userName != null and userName != ''">
+                    t.user_name like concat(concat('%', #{userName}), '%')
+                </when>
+                <when test="status > -1">
+                    t.status = #{status}
+                </when>
+                <otherwise></otherwise>
+            </choose>
+        </where>
+    </select>
+    <!--  使用resultMao映射结果集  -->
+    <resultMap id="userInfoMap5" type="UserInfo">
+        <id property="id" column="id"/>
+        <result property="userCode" column="user_code"/>
+        <result property="userName" column="user_name"/>
+    </resultMap>
 
 </mapper>
